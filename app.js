@@ -75,7 +75,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/homes', async function (req, res) {
+app.get('/homes', async(req, res) => {
   let { finnkode } = req.query;
 
   let content = [];
@@ -153,6 +153,6 @@ app.get('/homes', async function (req, res) {
   //   });
 })
 
-app.listen(PORT, () => {
+app.listen({port: process.env.PORT || 3001}, () => {
   console.log(`server is running on PORT:${PORT}`);
 });
