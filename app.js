@@ -1,7 +1,4 @@
 const express = require('express');
-const axios = require('axios');
-const cheerio = require('cheerio');
-
 const puppeteer = require('puppeteer');
 
 const config = {
@@ -63,8 +60,6 @@ function checkObjectProperty(object_title, object_value) {
   titles.forEach(el => {
     if (object_title.includes(el.Id_title)) {
       val = `"${el.Id_title}": "${object_value}"`;
-      // val.Title = el.Id_title;
-      // val.Value = object_value;
     }
   });
 
@@ -74,6 +69,10 @@ function checkObjectProperty(object_title, object_value) {
 const app = express();
 
 const PORT = process.env.PORT || 3001;
+
+app.get("/", function (req, res) {
+  res.send("<h1>Hello World!</h1>")
+})
 
 app.get('/homes', async(req, res) => {
   let { finnkode } = req.query;
@@ -117,40 +116,8 @@ app.get('/homes', async(req, res) => {
 
   content.push(JSON.parse(`{ ${OBJECT_1}, ${OBJECT_2}, ${OBJECT_3}, ${OBJECT_4}, ${OBJECT_5} }`))
 
-  // const [XPATH_AD_COST_ESTIMATE] = await page.$x('/html/body/main/div/div[2]/div/div[1]/div/div[2]/dl[2]/dd[1]');
-  // const AD_COST_ESTIMATE = await page.evaluate(name => name.innerText, XPATH_AD_COST_ESTIMATE);
-
   await browser.close();
   res.json(content)
-
-  // axios.get('https://www.finn.no/realestate/homes/ad.html', { params: { finnkode: finnkode } })
-  //   .then(function (response) {
-  //     let data = response.data;
-  //     const $ = cheerio.load(data);
-
-  //     let content = [];
-
-  //     let ad_title = '';
-
-  //     // Gets title of ad
-  //     $('h1').each(function () {
-  //       let h1_parsed = $(this).text().replace(/\s\s+/g, ' ');
-  //       if (!h1_parsed.includes('FINN.no')) {
-  //         ad_title = h1_parsed;
-  //       }
-  //     })
-
-  //     content.push({
-  //       ad_title
-  //     })
-
-  //     res.json(content)
-  //   })
-  //   .catch(function (error) {
-  //     console.error(error);
-  //   })
-  //   .then(function () {
-  //   });
 })
 
 app.listen({port: process.env.PORT || 3001}, () => {
